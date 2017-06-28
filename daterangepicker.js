@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.4
+ * @version: 1.0.5
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -330,8 +330,10 @@
                     start = this.minDate.clone();
 
                 var maxDate = this.maxDate;
+
                 if (this.dateLimit && start.clone().add(this.dateLimit).isAfter(maxDate))
                     maxDate = start.clone().add(this.dateLimit);
+
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
@@ -404,10 +406,13 @@
 
         //apply CSS classes and labels to buttons
         this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+
         if (this.applyClass.length)
             this.container.find('.applyBtn').addClass(this.applyClass);
+
         if (this.cancelClass.length)
             this.container.find('.cancelBtn').addClass(this.cancelClass);
+
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
 
@@ -1233,6 +1238,7 @@
                 return;
 
             var label = e.target.innerHTML;
+
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else {
@@ -1244,7 +1250,9 @@
 
         clickRange: function(e) {
             var label = e.target.innerHTML;
+
             this.chosenLabel = label;
+
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
@@ -1259,7 +1267,9 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+                // this.clickApply(); //xavtodo: no longer send request immediately after clicking on custom date range
+
+                this.updateView();
             }
         },
 
@@ -1336,7 +1346,7 @@
         },
 
         setTime: function(sideClass, date){
-            if (!this.timePicker) return;
+            if (!this.timePicker) return date;
 
             var hour = parseInt(this.container.find(sideClass + ' .hourselect').val(), 10);
 
@@ -1365,6 +1375,7 @@
             var date = this.getDate(e);
 
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
+
 
                 date = this.setTime('.left', date);
 
