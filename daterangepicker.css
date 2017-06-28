@@ -199,6 +199,23 @@
       border: 1px solid #08c;
       color: #fff; }
 
+.apply-cancel-buttons{
+  border-radius: 2px;
+  background-color: #f3fbff;
+  padding: 16px; }
+
+
+  .apply-cancel-buttons .applyBtn,
+  .apply-cancel-buttons .cancelBtn{
+    float: right;
+    display: inline-block;
+    border-radius: 2px;
+    height: 32px;
+    outline: none; }
+
+  .apply-cancel-buttons .applyBtn{
+    margin-left: 8px; }
+
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .daterangepicker {

@@ -131,13 +131,13 @@
                 '<div class="calendar-table"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="apply-cancel-buttons">' +
-                '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                '<button class="cancelBtn" type="button"></button>' +
-                '</div>' +
                 '</div>' +
                 '<div class="ranges">' +
                 '</div>' +
+                '</div>' +
+                '<div class="apply-cancel-buttons clearfix">' +
+                '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                '<button class="cancelBtn" type="button"></button>' +
                 '</div>' +
                 '</div>';
 
@@ -1412,6 +1412,7 @@
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
+                    //xavtodo: this.endDate is set 1 day in the future --> why?
                     if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();

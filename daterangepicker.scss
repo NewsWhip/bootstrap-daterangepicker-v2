@@ -296,14 +296,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       }
     }
 
-    //
-    // Date Range
     &.in-range {
       background-color: $daterangepicker-in-range-bg-color;
       border-color: $daterangepicker-in-range-border-color;
       color: $daterangepicker-in-range-color;
-
-      // TODO: Should this be static or should it be parameterized?
       border-radius: 0;
     }
 
@@ -471,6 +467,24 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       border: $daterangepicker-ranges-hover-border-size solid $daterangepicker-ranges-hover-border-color;
       color: $daterangepicker-ranges-hover-color;
     }
+  }
+}
+
+.apply-cancel-buttons{
+  border-radius: 2px;
+  background-color: #f3fbff;
+  padding: 16px;
+
+  .applyBtn, .cancelBtn{
+    float: right;
+    display: inline-block;
+    border-radius: 2px;
+    height: 32px;
+    outline: none;
+  }
+
+  .applyBtn{
+    margin-left: 8px;
   }
 }
 
