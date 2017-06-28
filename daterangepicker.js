@@ -106,7 +106,7 @@
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="clearfix wrapper">' +
-                '<div class="calendars-and-buttons">' +
+                '<div class="calendars">' +
                 '<div class="clearfix">' +
                 '<div class="calendar left">' +
                 '<div class="daterangepicker_input">' +
