@@ -121,8 +121,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   width: $daterangepicker-width;
   padding: $daterangepicker-padding;
   margin-top: $daterangepicker-border-size;
-
-  // TODO: Should these be parameterized??
   top: 100px;
   left: 20px;
 
@@ -132,14 +130,12 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   &:before, &:after {
     position: absolute;
     display: inline-block;
-
     border-bottom-color: rgba(0, 0, 0, 0.2);
     content: '';
   }
 
   &:before {
     top: -$arrow-prefix-size;
-
     border-right: $arrow-prefix-size solid transparent;
     border-left: $arrow-prefix-size solid transparent;
     border-bottom: $arrow-prefix-size solid $daterangepicker-border-color;
@@ -147,7 +143,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 
   &:after {
     top: -$arrow-suffix-size;
-
     border-right: $arrow-suffix-size solid transparent;
     border-bottom: $arrow-suffix-size solid $daterangepicker-bg-color;
     border-left: $arrow-suffix-size solid transparent;
@@ -155,12 +150,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 
   &.opensleft {
     &:before {
-      // TODO: Make this relative to prefix size.
       right: $arrow-prefix-size + 2px;
     }
 
     &:after {
-      // TODO: Make this relative to suffix size.
       right: $arrow-suffix-size + 4px;
     }
   }
@@ -185,12 +178,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 
   &.opensright {
     &:before {
-      // TODO: Make this relative to prefix size.
       left: $arrow-prefix-size + 2px;
     }
 
     &:after {
-      // TODO: Make this relative to suffix size.
       left: $arrow-suffix-size + 4px;
     }
   }
@@ -198,7 +189,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   &.dropup {
     margin-top: -5px;
 
-    // NOTE: Note sure why these are special-cased.
     &:before {
       top: initial;
       bottom: -$arrow-prefix-size;
@@ -219,36 +209,36 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     z-index: $daterangepicker-dropdown-z-index;
   }
 
-  &.single {
-    .ranges, .calendar {
-      float: none;
-    }
+  &.single .ranges,
+  &.single .calendar {
+    float: none;
   }
 
   /* Calendars */
-  &.show-calendar {
-    .calendar {
-      display: block;
-    }
+  &.show-calendar .calendar {
+    display: block;
   }
 
   .calendar {
     display: none;
+    float: left;
     max-width: $daterangepicker-width - ($daterangepicker-calendar-margin * 2);
     margin: $daterangepicker-calendar-margin;
 
-    &.single {
-      .calendar-table {
-        border: none;
-      }
+    &.single .calendar-table {
+      border: none;
     }
 
     th, td {
       white-space: nowrap;
       text-align: center;
-
-      // TODO: Should this actually be hard-coded?
       min-width: 32px;
+    }
+
+    td[class*="off off disabled"],
+    td[class="weekend off off disabled"],
+    td.off:not(.disabled){
+      visibility: hidden;
     }
   }
 
@@ -471,7 +461,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 }
 
 .apply-cancel-buttons{
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #f3fbff;
   padding: 16px;
 
