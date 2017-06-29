@@ -213,9 +213,12 @@
 }
 .ranges {
   font-size: 11px;
-  float: none;
   margin: 4px;
   text-align: left;
+  float: right;
+  margin: 0;
+  padding: 60px 0 115px;
+  border-left: 1px solid #e6e6e6;
 }
 .ranges ul {
   list-style: none;

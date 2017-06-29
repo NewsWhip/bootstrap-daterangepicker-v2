@@ -89,8 +89,9 @@ $daterangepicker-ranges-bg-color:             transparent !default;
 
 $daterangepicker-ranges-hover-color:          #fff !default;
 $daterangepicker-ranges-hover-bg-color:       $daterangepicker-ranges-color !default;
-  // STYLESHEETS
-//
+
+// STYLESHEETS
+
 .#{$prefix-class} {
   position: absolute;
   color: $daterangepicker-color;
@@ -380,9 +381,13 @@ $daterangepicker-ranges-hover-bg-color:       $daterangepicker-ranges-color !def
 
 .ranges {
   font-size: 11px;
-  float: none;
   margin: 4px;
   text-align: left;
+  //float: none;
+  float: right;
+  margin: 0;
+  padding: 60px 0 115px;
+  border-left: 1px solid #e6e6e6;
 
   ul {
     list-style: none;
