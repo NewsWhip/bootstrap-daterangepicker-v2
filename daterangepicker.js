@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.8
+ * @version: 1.0.9
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -575,8 +575,7 @@
                 }
             }
 
-            // xavtodo: use toggleClass fn - it is not working at the moment
-            // ideally on date hover you will know which input form to display the hovered over date
+            // xavtodo: ideally on date hover you will know which input form to display the hovered over date
             // depending whether yoo hover over after the first date or before and then which class to apply where
             if (this.endDate) {
                 this.$endDateInput.removeClass('active');
@@ -694,19 +693,20 @@
             // Build the matrix of dates that will populate the calendar
             //
 
-            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
-            var month = calendar.month.month();
-            var year = calendar.month.year();
-            var hour = calendar.month.hour();
-            var minute = calendar.month.minute();
-            var second = calendar.month.second();
-            var daysInMonth = moment([year, month]).daysInMonth();
-            var firstDay = moment([year, month, 1]);
-            var lastDay = moment([year, month, daysInMonth]);
-            var lastMonth = moment(firstDay).subtract(1, 'month').month();
-            var lastYear = moment(firstDay).subtract(1, 'month').year();
-            var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
-            var dayOfWeek = firstDay.day();
+            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar,
+                month = calendar.month.month(),
+                year = calendar.month.year(),
+                hour = calendar.month.hour(),
+                minute = calendar.month.minute(),
+                second = calendar.month.second(),
+                daysInMonth = moment([year, month]).daysInMonth(),
+                firstDay = moment([year, month, 1]),
+                lastDay = moment([year, month, daysInMonth]),
+                lastMonth = moment(firstDay).subtract(1, 'month').month(),
+                lastYear = moment(firstDay).subtract(1, 'month').year(),
+                daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth(),
+                dayOfWeek = firstDay.day(),
+                dayInMs = 86400000;
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
@@ -893,7 +893,7 @@
                     }
 
                     //highlight dates in-between the selected dates
-                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate - dayInMs))
                         classes.push('in-range');
 
                     if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
@@ -1258,7 +1258,7 @@
             } else {
                 var dates = this.ranges[label];
                 this.startDate = dates[0];
-                this.endDate = dates[1];
+                this.endDate = dates[1].utc();
 
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
@@ -1267,7 +1267,6 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                // this.clickApply(); //xavtodo: no longer send request immediately after clicking on custom date range
 
                 this.updateView();
             }
@@ -1408,12 +1407,12 @@
 
         calculateChosenLabel: function() {
             var customRange = true,
-                i = 0;
+                i = 0,
+                dayInMs = 86400000;
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    //xavtodo: this.endDate is set 1 day in the future --> why?
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + 86400000) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
