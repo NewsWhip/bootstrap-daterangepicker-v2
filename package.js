@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nwa-daterangepicker',
-  version: '1.0.12',
+  version: '1.0.13',
   summary: 'Daterangepicker based on Dan Grossman\'s bootstrap-daterangepicker.',
   git: 'https://github.com/NewsWhip/nwa-daterangepicker.git',
   documentation: 'README.md'

@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.12
+ * @version: 1.0.13
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -200,7 +200,7 @@
 
         if (typeof options.endDate === 'object'){
             this.endDate = moment(options.endDate).utc(); //xavtodo: it gotta stay like this
-            // this.endDate = moment(options.endDate); 
+            // this.endDate = moment(options.endDate);
             console.log('%c this.endDate::::::::::::::', 'border: 1px solid red; background: yellow;', this.endDate);
         }
 
@@ -896,8 +896,16 @@
 
                     //highlight dates in-between the selected dates
                     // if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate - dayInMs))
-                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col].valueOf() < this.endDate.valueOf())){
                         classes.push('in-range');
+
+                        if(row === 0 && col === 6){
+                            console.log('calendar[row][col]: ', calendar[row][col]);
+                            console.log('this.endDate: ', this.endDate);
+                            console.log('calendar[row][col] < this.endDate ', calendar[row][col] < this.endDate);
+                        }
+                    }
+
 
                     if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
                         this.tempDate2.isBefore(this.tempDate1) && calendar[row][col] > this.tempDate2 && calendar[row][col] < this.tempDate1)){
@@ -1427,11 +1435,23 @@
                         console.log('::::::::::::::::::::::::::');
                         console.log('this.ranges[range][0]: ,', this.ranges[range][0]);
                         console.log('this.ranges[range][1]: ,', this.ranges[range][1]);
+                        console.log(this.startDate.utcOffset());
+                        console.log(Math.abs(this.startDate.valueOf() - this.ranges[range][0].valueOf()) / 60 / 1000);
+                        console.log(this.endDate.utcOffset());
+                        console.log(Math.abs(this.endDate.valueOf() - this.ranges[range][1].valueOf()) / 60 / 1000);
                     console.groupEnd();
 
-                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                    // if (this.startDate.isSame(this.ranges[range][0].utc()) && this.endDate.isSame(this.ranges[range][1].utc())) {
+
+                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    // var sClone = this.startDate.clone(),
+                    //     eClone = this.endDate.clone(),
+                    //     ssClone = this.ranges[range][0].clone().utc(),
+                    //     eeClone = this.ranges[range][1].clone().utc();
+
+                    // if (sClone.isSame(ssClone) && eClone.isSame(eeClone)) {
+                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    if (this.startDate.utcOffset() === Math.abs(this.startDate.valueOf() - this.ranges[range][0].valueOf()) / 60 / 1000 &&
+                        this.endDate.utcOffset() === Math.abs(this.endDate.valueOf() - this.ranges[range][1].valueOf()) / 60 / 1000) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
