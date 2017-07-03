@@ -199,11 +199,10 @@
             this.startDate = moment(options.startDate);
 
         if (typeof options.endDate === 'object'){
-            this.endDate = moment(options.endDate).utc();
+            this.endDate = moment(options.endDate).utc(); //xavtodo: it gotta stay like this
+            // this.endDate = moment(options.endDate); 
             console.log('%c this.endDate::::::::::::::', 'border: 1px solid red; background: yellow;', this.endDate);
         }
-
-            // this.endDate = moment(options.endDate);
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -684,7 +683,6 @@
             this.renderCalendar('left');
             this.renderCalendar('right');
 
-            //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
 
             if (this.endDate == null) return;
@@ -1418,8 +1416,22 @@
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
-                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+
+                    console.group();
+                        console.log('RANGE: ', range);
+                        console.log('is start same: ', this.startDate.isSame(this.ranges[range][0]));
+                        console.log('is end same: ', this.endDate.isSame(this.ranges[range][1]));
+                        console.log('::::::::::::::::::::::::::');
+                        console.log('this.startDate: ,', this.startDate);
+                        console.log('this.endDate: ,', this.endDate);
+                        console.log('::::::::::::::::::::::::::');
+                        console.log('this.ranges[range][0]: ,', this.ranges[range][0]);
+                        console.log('this.ranges[range][1]: ,', this.ranges[range][1]);
+                    console.groupEnd();
+
+                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    // if (this.startDate.isSame(this.ranges[range][0].utc()) && this.endDate.isSame(this.ranges[range][1].utc())) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
