@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.10
+ * @version: 1.0.11
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -893,7 +893,8 @@
                     }
 
                     //highlight dates in-between the selected dates
-                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate - dayInMs))
+                    // if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate - dayInMs))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
                         classes.push('in-range');
 
                     if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
@@ -1258,7 +1259,8 @@
             } else {
                 var dates = this.ranges[label];
                 this.startDate = dates[0];
-                this.endDate = dates[1].utc();
+                this.endDate = dates[1];
+                // this.endDate = dates[1].utc();
 
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
@@ -1412,7 +1414,8 @@
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
+                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
