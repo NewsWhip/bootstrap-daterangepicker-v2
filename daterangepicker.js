@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.11
+ * @version: 1.0.12
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -198,8 +198,12 @@
         if (typeof options.startDate === 'object')
             this.startDate = moment(options.startDate);
 
-        if (typeof options.endDate === 'object')
-            this.endDate = moment(options.endDate);
+        if (typeof options.endDate === 'object'){
+            this.endDate = moment(options.endDate).utc();
+            console.log('%c this.endDate::::::::::::::', 'border: 1px solid red; background: yellow;', this.endDate);
+        }
+
+            // this.endDate = moment(options.endDate);
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -598,7 +602,7 @@
         },
 
         areBothDatesVisibleInTheCalendars: function(){
-             return !this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+            return !this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
                 (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM')) &&
                 (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'));
         },
@@ -1414,8 +1418,8 @@
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1]) + dayInMs) {
+                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
