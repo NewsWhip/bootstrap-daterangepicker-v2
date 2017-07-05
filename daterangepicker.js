@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.13
+ * @version: 1.0.14
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -198,11 +198,8 @@
         if (typeof options.startDate === 'object')
             this.startDate = moment(options.startDate);
 
-        if (typeof options.endDate === 'object'){
-            this.endDate = moment(options.endDate).utc(); //xavtodo: it gotta stay like this
-            // this.endDate = moment(options.endDate);
-            console.log('%c this.endDate::::::::::::::', 'border: 1px solid red; background: yellow;', this.endDate);
-        }
+        if (typeof options.endDate === 'object')
+            this.endDate = moment(options.endDate).utc();
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -895,17 +892,9 @@
                     }
 
                     //highlight dates in-between the selected dates
-                    // if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate - dayInMs))
                     if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col].valueOf() < this.endDate.valueOf())){
                         classes.push('in-range');
-
-                        if(row === 0 && col === 6){
-                            console.log('calendar[row][col]: ', calendar[row][col]);
-                            console.log('this.endDate: ', this.endDate);
-                            console.log('calendar[row][col] < this.endDate ', calendar[row][col] < this.endDate);
-                        }
                     }
-
 
                     if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
                         this.tempDate2.isBefore(this.tempDate1) && calendar[row][col] > this.tempDate2 && calendar[row][col] < this.tempDate1)){
@@ -1250,9 +1239,7 @@
 
             var label = e.target.innerHTML;
 
-            if (label == this.locale.customRangeLabel) {
-                this.updateView();
-            } else {
+            if (label !== this.locale.customRangeLabel) {
                 var dates = this.ranges[label];
                 this.$startDateInput.val(dates[0].format(this.locale.format));
                 this.$endDateInput.val(dates[1].format(this.locale.format));
@@ -1270,7 +1257,6 @@
                 var dates = this.ranges[label];
                 this.startDate = dates[0];
                 this.endDate = dates[1];
-                // this.endDate = dates[1].utc();
 
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
@@ -1419,43 +1405,18 @@
 
         calculateChosenLabel: function() {
             var customRange = true,
-                i = 0,
-                dayInMs = 86400000;
+                i = 0;
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
 
-                    console.group();
-                        console.log('RANGE: ', range);
-                        console.log('is start same: ', this.startDate.isSame(this.ranges[range][0]));
-                        console.log('is end same: ', this.endDate.isSame(this.ranges[range][1]));
-                        console.log('::::::::::::::::::::::::::');
-                        console.log('this.startDate: ,', this.startDate);
-                        console.log('this.endDate: ,', this.endDate);
-                        console.log('::::::::::::::::::::::::::');
-                        console.log('this.ranges[range][0]: ,', this.ranges[range][0]);
-                        console.log('this.ranges[range][1]: ,', this.ranges[range][1]);
-                        console.log(this.startDate.utcOffset());
-                        console.log(Math.abs(this.startDate.valueOf() - this.ranges[range][0].valueOf()) / 60 / 1000);
-                        console.log(this.endDate.utcOffset());
-                        console.log(Math.abs(this.endDate.valueOf() - this.ranges[range][1].valueOf()) / 60 / 1000);
-                    console.groupEnd();
 
-
-                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                    // var sClone = this.startDate.clone(),
-                    //     eClone = this.endDate.clone(),
-                    //     ssClone = this.ranges[range][0].clone().utc(),
-                    //     eeClone = this.ranges[range][1].clone().utc();
-
-                    // if (sClone.isSame(ssClone) && eClone.isSame(eeClone)) {
-                    // if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                    if (this.startDate.utcOffset() === Math.abs(this.startDate.valueOf() - this.ranges[range][0].valueOf()) / 60 / 1000 &&
-                        this.endDate.utcOffset() === Math.abs(this.endDate.valueOf() - this.ranges[range][1].valueOf()) / 60 / 1000) {
+                    if(this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])){
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
                     }
+
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
