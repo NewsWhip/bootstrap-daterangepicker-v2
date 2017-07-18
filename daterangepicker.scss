@@ -413,12 +413,12 @@ $daterangepicker-ranges-hover-bg-color:       $daterangepicker-ranges-color !def
   }
 }
 
-.apply-cancel-buttons{
+.daterangepicker .light-bg-btn-wrapper{
   border-radius: 4px;
   background-color: #f3fbff;
   padding: 16px;
 
-  .applyBtn, .cancelBtn{
+  .btn.apply-btn, .btn.cancel-btn{
     float: right;
     display: inline-block;
     border-radius: 2px;
@@ -426,7 +426,7 @@ $daterangepicker-ranges-hover-bg-color:       $daterangepicker-ranges-color !def
     outline: none;
   }
 
-  .applyBtn{
+  .btn.apply-btn{
     margin-left: 8px;
   }
 }

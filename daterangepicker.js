@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.14
+ * @version: 1.0.15
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -135,9 +135,9 @@
                 '<div class="ranges">' +
                 '</div>' +
                 '</div>' +
-                '<div class="apply-cancel-buttons clearfix">' +
-                '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                '<button class="cancelBtn" type="button"></button>' +
+                '<div class="light-bg-btn-wrapper clearfix">' +
+                '<button class="btn apply-btn" disabled="disabled" type="button"></button> ' +
+                '<button class="btn cancel-btn" type="button"></button>' +
                 '</div>' +
                 '</div>';
 
@@ -146,7 +146,7 @@
 
         this.$startDateInput = this.container.find('input[name=daterangepicker_start]');
         this.$endDateInput = this.container.find('input[name=daterangepicker_end]');
-        this.$applyBtn = this.container.find('button.applyBtn');
+        this.$applyBtn = this.container.find('button.apply-btn');
 
         //
         // handle all the possible options overriding defaults
@@ -376,7 +376,7 @@
         if (this.autoApply && typeof options.ranges !== 'object') {
             this.container.find('.ranges').hide();
         } else if (this.autoApply) {
-            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+            this.container.find('.apply-btn, .cancel-btn').addClass('hide');
         }
 
         if (this.singleDatePicker) {
@@ -405,16 +405,16 @@
         }
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        this.container.find('.apply-btn, .cancel-btn').addClass(this.buttonClasses);
 
         if (this.applyClass.length)
-            this.container.find('.applyBtn').addClass(this.applyClass);
+            this.container.find('.apply-btn').addClass(this.applyClass);
 
         if (this.cancelClass.length)
-            this.container.find('.cancelBtn').addClass(this.cancelClass);
+            this.container.find('.cancel-btn').addClass(this.cancelClass);
 
-        this.container.find('.applyBtn').html(this.locale.applyLabel);
-        this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        this.container.find('.apply-btn').html(this.locale.applyLabel);
+        this.container.find('.cancel-btn').html(this.locale.cancelLabel);
 
         //
         // event listeners
@@ -438,8 +438,8 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         this.container.find('.apply-cancel-buttons')
-            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
-            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+            .on('click.daterangepicker', 'button.apply-btn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancel-btn', $.proxy(this.clickCancel, this))
 
         if (this.element.is('input')) {
             this.element.on({
