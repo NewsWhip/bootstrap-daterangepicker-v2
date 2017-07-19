@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.15
+ * @version: 1.0.16
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -437,7 +437,7 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        this.container.find('.apply-cancel-buttons')
+        this.container.find('.light-bg-btn-wrapper')
             .on('click.daterangepicker', 'button.apply-btn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancel-btn', $.proxy(this.clickCancel, this))
 
@@ -1436,6 +1436,7 @@
         },
 
         clickApply: function(e) {
+            console.log('%c clickApply', 'background: pink');
             //incomplete date selection, do nothing
             if (!this.endDate) return;
 
