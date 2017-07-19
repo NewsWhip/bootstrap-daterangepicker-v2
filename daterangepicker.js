@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.16
+ * @version: 1.0.17
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -1436,7 +1436,6 @@
         },
 
         clickApply: function(e) {
-            console.log('%c clickApply', 'background: pink');
             //incomplete date selection, do nothing
             if (!this.endDate) return;
 
