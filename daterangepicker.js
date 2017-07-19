@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.17
+ * @version: 1.0.18
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -479,11 +479,17 @@
 
             if(!this.tempDate1){    //set 1st temp date
 
-                if (typeof date === 'string')
+                if (typeof date === 'string'){
                     this.tempDate1 = moment(date, this.locale.format);
+                    this.tempDate2 = null;
+                    //update input text
+                }
 
-                if (typeof date === 'object')
+                if (typeof date === 'object'){
                     this.tempDate1 = moment(date);
+                    this.tempDate2 = null;
+                    //update input text
+                }
 
             }else{              //set 2nd temp date
 
@@ -1438,6 +1444,12 @@
         clickApply: function(e) {
             //incomplete date selection, do nothing
             if (!this.endDate) return;
+
+            //if only tempDate1 is set, user selected only 1 date
+            if(this.tempDate1 && !this.tempDate2){
+                this.setStartDate(this.tempDate1);
+                this.setEndDate(this.tempDate1);
+            }
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
