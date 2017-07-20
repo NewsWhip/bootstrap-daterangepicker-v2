@@ -1,6 +1,6 @@
 {
   "name": "nwa-daterangepicker",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Daterangepicker based on Dan Grossman's bootstrap-daterangepicker.",
   "main": "daterangepicker.js",
   "directories": {

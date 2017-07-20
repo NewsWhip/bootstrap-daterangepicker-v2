@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.19
+ * @version: 1.0.20
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -1093,12 +1093,15 @@
                 this.$endDateInput.val(this.endDate.format(this.locale.format));
 
             if(this.tempDate1){
+                console.log('%c update first input', 'background: red; border: 2px solid black');
                 this.$startDateInput.val(this.tempDate1.format(this.locale.format));
                 this.$endDateInput.val(this.tempDate1.format(this.locale.format));
             }
 
-            if(this.tempDate2)
+            if(this.tempDate2){
+                console.log('%c update second input', 'background: orange; border: 2px solid black');
                 this.$endDateInput.val(this.tempDate2.format(this.locale.format));
+            }
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.$applyBtn.removeAttr('disabled');
