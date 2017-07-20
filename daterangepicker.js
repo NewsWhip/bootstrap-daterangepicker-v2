@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.5
+ * @version: 1.0.20
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -106,7 +106,7 @@
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="clearfix wrapper">' +
-                '<div class="calendars-and-buttons">' +
+                '<div class="calendars">' +
                 '<div class="clearfix">' +
                 '<div class="calendar left">' +
                 '<div class="daterangepicker_input">' +
@@ -131,13 +131,13 @@
                 '<div class="calendar-table"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="apply-cancel-buttons">' +
-                '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                '<button class="cancelBtn" type="button"></button>' +
-                '</div>' +
                 '</div>' +
                 '<div class="ranges">' +
                 '</div>' +
+                '</div>' +
+                '<div class="light-bg-btn-wrapper clearfix">' +
+                '<button class="btn apply-btn" disabled="disabled" type="button"></button> ' +
+                '<button class="btn cancel-btn" type="button"></button>' +
                 '</div>' +
                 '</div>';
 
@@ -146,7 +146,7 @@
 
         this.$startDateInput = this.container.find('input[name=daterangepicker_start]');
         this.$endDateInput = this.container.find('input[name=daterangepicker_end]');
-        this.$applyBtn = this.container.find('button.applyBtn');
+        this.$applyBtn = this.container.find('button.apply-btn');
 
         //
         // handle all the possible options overriding defaults
@@ -199,7 +199,7 @@
             this.startDate = moment(options.startDate);
 
         if (typeof options.endDate === 'object')
-            this.endDate = moment(options.endDate);
+            this.endDate = moment(options.endDate).utc();
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -376,7 +376,7 @@
         if (this.autoApply && typeof options.ranges !== 'object') {
             this.container.find('.ranges').hide();
         } else if (this.autoApply) {
-            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+            this.container.find('.apply-btn, .cancel-btn').addClass('hide');
         }
 
         if (this.singleDatePicker) {
@@ -405,16 +405,16 @@
         }
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        this.container.find('.apply-btn, .cancel-btn').addClass(this.buttonClasses);
 
         if (this.applyClass.length)
-            this.container.find('.applyBtn').addClass(this.applyClass);
+            this.container.find('.apply-btn').addClass(this.applyClass);
 
         if (this.cancelClass.length)
-            this.container.find('.cancelBtn').addClass(this.cancelClass);
+            this.container.find('.cancel-btn').addClass(this.cancelClass);
 
-        this.container.find('.applyBtn').html(this.locale.applyLabel);
-        this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        this.container.find('.apply-btn').html(this.locale.applyLabel);
+        this.container.find('.cancel-btn').html(this.locale.cancelLabel);
 
         //
         // event listeners
@@ -437,9 +437,9 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        this.container.find('.apply-cancel-buttons')
-            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
-            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+        this.container.find('.light-bg-btn-wrapper')
+            .on('click.daterangepicker', 'button.apply-btn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancel-btn', $.proxy(this.clickCancel, this))
 
         if (this.element.is('input')) {
             this.element.on({
@@ -479,11 +479,15 @@
 
             if(!this.tempDate1){    //set 1st temp date
 
-                if (typeof date === 'string')
+                if (typeof date === 'string'){
                     this.tempDate1 = moment(date, this.locale.format);
+                    this.tempDate2 = null;
+                }
 
-                if (typeof date === 'object')
+                if (typeof date === 'object'){
                     this.tempDate1 = moment(date);
+                    this.tempDate2 = null;
+                }
 
             }else{              //set 2nd temp date
 
@@ -575,8 +579,7 @@
                 }
             }
 
-            // xavtodo: use toggleClass fn - it is not working at the moment
-            // ideally on date hover you will know which input form to display the hovered over date
+            // xavtodo: ideally on date hover you will know which input form to display the hovered over date
             // depending whether yoo hover over after the first date or before and then which class to apply where
             if (this.endDate) {
                 this.$endDateInput.removeClass('active');
@@ -599,7 +602,7 @@
         },
 
         areBothDatesVisibleInTheCalendars: function(){
-             return !this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+            return !this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
                 (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM')) &&
                 (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'));
         },
@@ -681,7 +684,6 @@
             this.renderCalendar('left');
             this.renderCalendar('right');
 
-            //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
 
             if (this.endDate == null) return;
@@ -694,19 +696,20 @@
             // Build the matrix of dates that will populate the calendar
             //
 
-            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
-            var month = calendar.month.month();
-            var year = calendar.month.year();
-            var hour = calendar.month.hour();
-            var minute = calendar.month.minute();
-            var second = calendar.month.second();
-            var daysInMonth = moment([year, month]).daysInMonth();
-            var firstDay = moment([year, month, 1]);
-            var lastDay = moment([year, month, daysInMonth]);
-            var lastMonth = moment(firstDay).subtract(1, 'month').month();
-            var lastYear = moment(firstDay).subtract(1, 'month').year();
-            var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
-            var dayOfWeek = firstDay.day();
+            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar,
+                month = calendar.month.month(),
+                year = calendar.month.year(),
+                hour = calendar.month.hour(),
+                minute = calendar.month.minute(),
+                second = calendar.month.second(),
+                daysInMonth = moment([year, month]).daysInMonth(),
+                firstDay = moment([year, month, 1]),
+                lastDay = moment([year, month, daysInMonth]),
+                lastMonth = moment(firstDay).subtract(1, 'month').month(),
+                lastYear = moment(firstDay).subtract(1, 'month').year(),
+                daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth(),
+                dayOfWeek = firstDay.day(),
+                dayInMs = 86400000;
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
@@ -893,8 +896,9 @@
                     }
 
                     //highlight dates in-between the selected dates
-                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col].valueOf() < this.endDate.valueOf())){
                         classes.push('in-range');
+                    }
 
                     if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
                         this.tempDate2.isBefore(this.tempDate1) && calendar[row][col] > this.tempDate2 && calendar[row][col] < this.tempDate1)){
@@ -1078,7 +1082,6 @@
             this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
 
         },
-
         updateFormInputs: function() {
             //ignore mouse movements while an above-calendar text input has focus
             if (this.$startDateInput.is(":focus") || this.$endDateInput.is(":focus"))
@@ -1089,12 +1092,22 @@
             if (this.endDate)
                 this.$endDateInput.val(this.endDate.format(this.locale.format));
 
+            if(this.tempDate1){
+                console.log('%c update first input', 'background: red; border: 2px solid black');
+                this.$startDateInput.val(this.tempDate1.format(this.locale.format));
+                this.$endDateInput.val(this.tempDate1.format(this.locale.format));
+            }
+
+            if(this.tempDate2){
+                console.log('%c update second input', 'background: orange; border: 2px solid black');
+                this.$endDateInput.val(this.tempDate2.format(this.locale.format));
+            }
+
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.$applyBtn.removeAttr('disabled');
             } else {
                 this.$applyBtn.attr('disabled', 'disabled');
             }
-
         },
 
         move: function() {
@@ -1239,9 +1252,7 @@
 
             var label = e.target.innerHTML;
 
-            if (label == this.locale.customRangeLabel) {
-                this.updateView();
-            } else {
+            if (label !== this.locale.customRangeLabel) {
                 var dates = this.ranges[label];
                 this.$startDateInput.val(dates[0].format(this.locale.format));
                 this.$endDateInput.val(dates[1].format(this.locale.format));
@@ -1267,7 +1278,6 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                // this.clickApply(); //xavtodo: no longer send request immediately after clicking on custom date range
 
                 this.updateView();
             }
@@ -1412,11 +1422,14 @@
 
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+
+
+                    if(this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])){
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
                         break;
                     }
+
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
@@ -1438,6 +1451,12 @@
         clickApply: function(e) {
             //incomplete date selection, do nothing
             if (!this.endDate) return;
+
+            //if only tempDate1 is set, user selected only 1 date
+            if(this.tempDate1 && !this.tempDate2){
+                this.setStartDate(this.tempDate1);
+                this.setEndDate(this.tempDate1);
+            }
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
