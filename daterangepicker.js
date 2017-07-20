@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.18
+ * @version: 1.0.19
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -482,13 +482,11 @@
                 if (typeof date === 'string'){
                     this.tempDate1 = moment(date, this.locale.format);
                     this.tempDate2 = null;
-                    //update input text
                 }
 
                 if (typeof date === 'object'){
                     this.tempDate1 = moment(date);
                     this.tempDate2 = null;
-                    //update input text
                 }
 
             }else{              //set 2nd temp date
@@ -1084,7 +1082,6 @@
             this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
 
         },
-
         updateFormInputs: function() {
             //ignore mouse movements while an above-calendar text input has focus
             if (this.$startDateInput.is(":focus") || this.$endDateInput.is(":focus"))
@@ -1095,12 +1092,19 @@
             if (this.endDate)
                 this.$endDateInput.val(this.endDate.format(this.locale.format));
 
+            if(this.tempDate1){
+                this.$startDateInput.val(this.tempDate1.format(this.locale.format));
+                this.$endDateInput.val(this.tempDate1.format(this.locale.format));
+            }
+
+            if(this.tempDate2)
+                this.$endDateInput.val(this.tempDate2.format(this.locale.format));
+
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.$applyBtn.removeAttr('disabled');
             } else {
                 this.$applyBtn.attr('disabled', 'disabled');
             }
-
         },
 
         move: function() {
