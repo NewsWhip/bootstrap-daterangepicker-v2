@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.22
+ * @version: 1.0.23
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -196,10 +196,10 @@
             this.maxDate = moment(options.maxDate, this.locale.format);
 
         if (typeof options.startDate === 'object')
-            this.startDate = moment(options.startDate);
+            this.startDate = options.startDate;
 
         if (typeof options.endDate === 'object')
-            this.endDate = moment(options.endDate).utc();
+            this.endDate = options.endDate;
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -514,7 +514,7 @@
                 this.startDate = moment(startDate, this.locale.format);
 
             if (typeof startDate === 'object')
-                this.startDate = moment(startDate);
+                this.startDate = startDate;
 
             if (!this.timePicker)
                 this.startDate = this.startDate.startOf('day');
@@ -539,7 +539,7 @@
                 this.endDate = moment(endDate, this.locale.format);
 
             if (typeof endDate === 'object')
-                this.endDate = moment(endDate);
+                this.endDate = endDate;
 
             if (!this.timePicker)
                 this.endDate = this.endDate.endOf('day');
@@ -1310,7 +1310,6 @@
                 row = title.substr(1, 1),
                 col = title.substr(3, 1);
 
-            //return { title, cal, row, col, date: cal.hasClass('left') ? self.leftCalendar.calendar[row][col] : self.rightCalendar.calendar[row][col] };
             return cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
         },
 
@@ -1382,7 +1381,6 @@
             var date = this.getDate(e);
 
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
-
 
                 date = this.setTime('.left', date);
 
